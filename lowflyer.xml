@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Program name="lowflyer">
+  <Variables>
+    <Variable name="target" number="-0" />
+    <Variable name="highmargin" number="-0" />
+    <Variable name="lowmargin" number="-0" />
+    <Variable name="margin" number="-0" />
+  </Variables>
+  <Instructions>
+    <Event event="FlightStart" id="0" style="flight-start" pos="-10,-20" />
+    <SetVariable id="1" style="set-variable">
+      <Variable list="false" local="false" variableName="target" />
+      <Constant text="150" />
+    </SetVariable>
+    <SetVariable id="2" style="set-variable">
+      <Variable list="false" local="false" variableName="lowmargin" />
+      <Constant text="50" />
+    </SetVariable>
+    <SetVariable id="3" style="set-variable">
+      <Variable list="false" local="false" variableName="highmargin" />
+      <Constant text="70" />
+    </SetVariable>
+    <SetVariable id="4" style="set-variable">
+      <Variable list="false" local="false" variableName="margin" />
+      <Constant text="20" />
+    </SetVariable>
+    <LockNavSphere indicatorType="Current" id="5" style="lock-nav-sphere" />
+    <SetTargetHeading property="pitch" id="6" style="set-heading">
+      <Constant text="10" />
+    </SetTargetHeading>
+    <SetInput input="throttle" id="7" style="set-input">
+      <Constant text="1" />
+    </SetInput>
+    <WaitUntil id="8" style="wait-until">
+      <Comparison op="ge" style="op-gte">
+        <CraftProperty property="Altitude.AGL" style="prop-altitude" />
+        <Variable list="false" local="false" variableName="target" />
+      </Comparison>
+    </WaitUntil>
+    <SetActivationGroup id="9" style="set-ag">
+      <Constant text="8" />
+      <Constant style="false" bool="false" />
+    </SetActivationGroup>
+    <Comment id="10" style="comment">
+      <Constant style="comment-text" canReplace="false" text="Retracting landing gear" />
+    </Comment>
+    <While id="11" style="while">
+      <Constant style="true" bool="true" />
+      <Instructions>
+        <If id="12" style="if">
+          <Comparison op="l" style="op-lt">
+            <CraftProperty property="Altitude.AGL" style="prop-altitude" />
+            <CallCustomExpression call="lowest" style="call-custom-expression" />
+          </Comparison>
+          <Instructions>
+            <SetTargetHeading property="pitch" id="13" style="set-heading">
+              <Constant text="10" />
+            </SetTargetHeading>
+            <WaitUntil id="14" style="wait-until">
+              <Comparison op="ge" style="op-gte">
+                <CraftProperty property="Altitude.AGL" style="prop-altitude" />
+                <BinaryOp op="+" style="op-add">
+                  <CallCustomExpression call="lowest" style="call-custom-expression" />
+                  <Variable list="false" local="false" variableName="margin" />
+                </BinaryOp>
+              </Comparison>
+            </WaitUntil>
+            <SetTargetHeading property="pitch" id="15" style="set-heading">
+              <Constant text="0" />
+            </SetTargetHeading>
+          </Instructions>
+        </If>
+        <ElseIf id="16" style="else-if">
+          <Comparison op="g" style="op-gt">
+            <CraftProperty property="Altitude.AGL" style="prop-altitude" />
+            <CallCustomExpression call="highest" style="call-custom-expression" />
+          </Comparison>
+          <Instructions>
+            <SetTargetHeading property="pitch" id="17" style="set-heading">
+              <Constant text="-5" />
+            </SetTargetHeading>
+            <WaitUntil id="18" style="wait-until">
+              <Comparison op="le" style="op-lte">
+                <CraftProperty property="Altitude.AGL" style="prop-altitude" />
+                <BinaryOp op="-" style="op-sub">
+                  <CallCustomExpression call="highest" style="call-custom-expression" />
+                  <Variable list="false" local="false" variableName="margin" />
+                </BinaryOp>
+              </Comparison>
+            </WaitUntil>
+            <SetTargetHeading property="pitch" id="19" style="set-heading">
+              <Constant number="-0" />
+            </SetTargetHeading>
+          </Instructions>
+        </ElseIf>
+      </Instructions>
+    </While>
+  </Instructions>
+  <Expressions>
+    <CustomExpression callFormat="highest" format="highest return (0)" name="highest" style="custom-expression" pos="483.2363,-245.7314">
+      <BinaryOp op="+" style="op-add">
+        <Variable list="false" local="false" variableName="target" />
+        <Variable list="false" local="false" variableName="highmargin" />
+      </BinaryOp>
+    </CustomExpression>
+    <CustomExpression callFormat="lowest" format="lowest return (0)" name="lowest" style="custom-expression" pos="479.1432,-192.2978">
+      <BinaryOp op="-" style="op-sub">
+        <Variable list="false" local="false" variableName="target" />
+        <Variable list="false" local="false" variableName="lowmargin" />
+      </BinaryOp>
+    </CustomExpression>
+  </Expressions>
+</Program>

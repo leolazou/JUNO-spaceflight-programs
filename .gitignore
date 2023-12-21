@@ -1,0 +1,4 @@
+# ignore all defaulf programs
+__new__.xml
+MFD *.xml
+SimpleLaunch.xml

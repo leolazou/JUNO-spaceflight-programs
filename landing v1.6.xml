@@ -1,0 +1,549 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Program name="landing v1.6">
+  <Variables>
+    <Variable name="©" number="-0" />
+    <Variable name="craft_height" number="-0" />
+    <Variable name="max_TWR" number="-0" />
+  </Variables>
+  <Instructions>
+    <Event event="ReceiveMessage" id="0" style="receive-msg" pos="1047.16,-1878.265">
+      <Constant canReplace="false" text="chk will crash" />
+    </Event>
+    <While id="1" style="while">
+      <Not style="op-not">
+        <CraftProperty property="Misc.Grounded" style="prop-misc" />
+      </Not>
+      <Instructions>
+        <If id="2" style="if">
+          <Comparison op="l" style="op-lt">
+            <CallCustomExpression call="h" style="call-custom-expression" />
+            <CallCustomExpression call="h_to_stop" style="call-custom-expression" />
+          </Comparison>
+          <Instructions>
+            <For var="i" id="3" style="for">
+              <Constant number="1" />
+              <Constant text="5" />
+              <Constant text="1" />
+              <Instructions>
+                <SetCraftProperty property="Sound.Beep" id="4" style="play-beep">
+                  <Constant text="2000" />
+                  <Constant number="1" />
+                  <Constant text="0.05" />
+                </SetCraftProperty>
+                <WaitSeconds id="5" style="wait-seconds">
+                  <Constant text="0.1" />
+                </WaitSeconds>
+              </Instructions>
+            </For>
+          </Instructions>
+        </If>
+      </Instructions>
+    </While>
+  </Instructions>
+  <Instructions>
+    <Event event="ReceiveMessage" id="6" style="receive-msg" pos="1039.283,-1641.453">
+      <Constant canReplace="false" text="landing gear ready" />
+    </Event>
+    <WaitUntil id="7" style="wait-until">
+      <Comparison op="le" style="op-lte">
+        <CallCustomExpression call="t_to_stop" style="call-custom-expression" />
+        <Constant text="7" />
+      </Comparison>
+    </WaitUntil>
+    <Comment id="8" style="comment">
+      <Constant style="comment-text" canReplace="false" text="Deploy landing gear" />
+    </Comment>
+    <SetActivationGroup id="9" style="set-ag">
+      <Constant text="8" />
+      <Constant style="true" bool="true" />
+    </SetActivationGroup>
+  </Instructions>
+  <Instructions>
+    <CustomInstruction callFormat="beep (0) times at (1) Hz for (2) sec with (3) sec delay at (4) volume" format="beep |n| times at |f| Hz for |t| sec with |d| sec delay at |v| volume" name="beep" id="10" style="custom-instruction" pos="2359.754,-1647.479" />
+    <If id="11" style="if">
+      <BoolOp op="and" style="op-and">
+        <Variable list="false" local="true" variableName="n" />
+        <Comparison op="ge" style="op-gte">
+          <Variable list="false" local="true" variableName="n" />
+          <Constant text="2" />
+        </Comparison>
+      </BoolOp>
+      <Instructions>
+        <For var="i" id="12" style="for">
+          <Constant number="1" />
+          <Variable list="false" local="true" variableName="n" />
+          <Constant text="1" />
+          <Instructions>
+            <SetCraftProperty property="Sound.Beep" id="13" style="play-beep">
+              <Conditional style="conditional">
+                <Variable list="false" local="true" variableName="f" />
+                <Variable list="false" local="true" variableName="f" />
+                <Constant text="2000" />
+              </Conditional>
+              <Conditional style="conditional">
+                <Variable list="false" local="true" variableName="v" />
+                <Variable list="false" local="true" variableName="v" />
+                <Constant text="1" />
+              </Conditional>
+              <Conditional style="conditional">
+                <Variable list="false" local="true" variableName="t" />
+                <Variable list="false" local="true" variableName="t" />
+                <Constant text="0.01" />
+              </Conditional>
+            </SetCraftProperty>
+            <WaitSeconds id="14" style="wait-seconds">
+              <Conditional style="conditional">
+                <Variable list="false" local="true" variableName="d" />
+                <Variable list="false" local="true" variableName="d" />
+                <Constant text="0.1" />
+              </Conditional>
+            </WaitSeconds>
+          </Instructions>
+        </For>
+      </Instructions>
+    </If>
+    <ElseIf id="15" style="else">
+      <Constant bool="true" />
+      <Instructions>
+        <SetCraftProperty property="Sound.Beep" id="16" style="play-beep">
+          <Conditional style="conditional">
+            <Variable list="false" local="true" variableName="f" />
+            <Variable list="false" local="true" variableName="f" />
+            <Constant text="2000" />
+          </Conditional>
+          <Conditional style="conditional">
+            <Variable list="false" local="true" variableName="v" />
+            <Variable list="false" local="true" variableName="v" />
+            <Constant text="1" />
+          </Conditional>
+          <Conditional style="conditional">
+            <Variable list="false" local="true" variableName="t" />
+            <Variable list="false" local="true" variableName="t" />
+            <Constant text="0.3" />
+          </Conditional>
+        </SetCraftProperty>
+      </Instructions>
+    </ElseIf>
+  </Instructions>
+  <Instructions>
+    <Event event="FlightStart" id="17" style="flight-start" pos="-368.048,83.69136" />
+    <WaitUntil id="18" style="wait-until">
+      <CallCustomExpression call="&gt; ON" style="call-custom-expression" />
+    </WaitUntil>
+    <WaitUntil id="19" style="wait-until" pos="-368.048,-120.3848">
+      <Comparison op="l" style="op-lt">
+        <CraftProperty property="Vel.VerticalSurfaceVelocity" style="prop-velocity" />
+        <Constant number="-0" />
+      </Comparison>
+    </WaitUntil>
+    <Comment id="20" style="comment">
+      <Constant style="comment-text" canReplace="false" text="Program start signal" />
+    </Comment>
+    <CallCustomInstruction call="beep" id="21" style="call-custom-instruction">
+      <Constant text="3" />
+      <Constant text="2000" />
+      <Constant text="0.05" />
+      <Constant text="1" />
+      <Constant text="1" />
+    </CallCustomInstruction>
+    <BroadcastMessage global="false" local="false" id="22" style="broadcast-msg-craft">
+      <Constant text="chk will crash" />
+      <Constant number="-0" />
+    </BroadcastMessage>
+    <While id="23" style="while">
+      <Comparison op="g" style="op-gt">
+        <BinaryOp op="+" style="op-add">
+          <CallCustomExpression call="h" style="call-custom-expression" />
+          <BinaryOp op="*" style="op-mul">
+            <Constant text="1" />
+            <CraftProperty property="Vel.VerticalSurfaceVelocity" style="prop-velocity" />
+          </BinaryOp>
+        </BinaryOp>
+        <CallCustomExpression call="h_to_stop" style="call-custom-expression" />
+      </Comparison>
+      <Instructions>
+        <LockNavSphere indicatorType="Retrograde" id="24" style="lock-nav-sphere" />
+        <SetInput input="throttle" id="25" style="set-input">
+          <CallCustomExpression call="descent_throttle" style="call-custom-expression" />
+        </SetInput>
+        <SetVariable id="26" style="set-variable">
+          <Variable list="false" local="false" variableName="©" />
+          <StringOp op="join" style="join">
+            <Constant text="{∆h =" />
+            <StringOp op="friendly" subOp="distance" style="friendly">
+              <BinaryOp op="-" style="op-sub">
+                <CallCustomExpression call="h" style="call-custom-expression" />
+                <CallCustomExpression call="h_to_stop" style="call-custom-expression" />
+              </BinaryOp>
+            </StringOp>
+            <Constant text="}" />
+            <Constant text="" />
+          </StringOp>
+        </SetVariable>
+        <SetVariable id="27" style="set-variable">
+          <Variable list="false" local="false" variableName="©" />
+          <StringOp op="join" style="join">
+            <Variable list="false" local="false" variableName="©" />
+            <Constant text="-" />
+            <Constant text="{tt stop =" />
+            <StringOp op="friendly" subOp="time" style="friendly">
+              <CallCustomExpression call="t_to_stop" style="call-custom-expression" />
+            </StringOp>
+            <Constant text="}" />
+            <Constant text="" />
+          </StringOp>
+        </SetVariable>
+        <SetVariable id="28" style="set-variable">
+          <Variable list="false" local="false" variableName="©" />
+          <StringOp op="join" style="join">
+            <Variable list="false" local="false" variableName="©" />
+            <Constant text="-" />
+            <Constant text="{∆tt =" />
+            <StringOp op="friendly" subOp="time" style="friendly">
+              <BinaryOp op="-" style="op-sub">
+                <CallCustomExpression call="t_to_impact" style="call-custom-expression" />
+                <CallCustomExpression call="t_to_stop" style="call-custom-expression" />
+              </BinaryOp>
+            </StringOp>
+            <Constant text="}" />
+            <Constant text="" />
+          </StringOp>
+        </SetVariable>
+        <SetVariable id="29" style="set-variable">
+          <Variable list="false" local="false" variableName="©" />
+          <StringOp op="join" style="join">
+            <Variable list="false" local="false" variableName="©" />
+            <Constant text="-" />
+            <Constant text="{side v =" />
+            <StringOp op="friendly" subOp="velocity" style="friendly">
+              <CraftProperty property="Vel.LateralSurfaceVelocity" style="prop-velocity" />
+            </StringOp>
+            <Constant text="}" />
+            <Constant text="" />
+          </StringOp>
+        </SetVariable>
+        <DisplayMessage id="30" style="display">
+          <Variable list="false" local="false" variableName="©" />
+          <Constant number="7" />
+        </DisplayMessage>
+      </Instructions>
+    </While>
+    <Comment id="31" style="comment">
+      <Constant style="comment-text" canReplace="false" text="Landing desceleration" />
+    </Comment>
+    <CallCustomInstruction call="beep" id="32" style="call-custom-instruction">
+      <Constant text="1" />
+      <Constant text="700" />
+      <Constant text="0.7" />
+      <Constant text="" />
+      <Constant text="" />
+    </CallCustomInstruction>
+    <BroadcastMessage global="false" local="false" id="33" style="broadcast-msg-craft">
+      <Constant text="landing gear ready" />
+      <Constant number="-0" />
+    </BroadcastMessage>
+    <While id="34" style="while">
+      <Comparison op="g" style="op-gt">
+        <CallCustomExpression call="t_to_stop" style="call-custom-expression" />
+        <Constant text="0.2" />
+      </Comparison>
+      <Instructions>
+        <LockNavSphere indicatorType="Retrograde" id="35" style="lock-nav-sphere" />
+        <SetInput input="throttle" id="36" style="set-input">
+          <BinaryOp op="/" style="op-div">
+            <CallCustomExpression call="landing_thrust" style="call-custom-expression" />
+            <CraftProperty property="Performance.MaxActiveEngineThrust" style="prop-performance" />
+          </BinaryOp>
+        </SetInput>
+        <SetVariable id="37" style="set-variable">
+          <Variable list="false" local="false" variableName="©" />
+          <StringOp op="join" style="join">
+            <Constant text="{∆h =" />
+            <StringOp op="friendly" subOp="distance" style="friendly">
+              <BinaryOp op="-" style="op-sub">
+                <CallCustomExpression call="h" style="call-custom-expression" />
+                <CallCustomExpression call="h_to_stop" style="call-custom-expression" />
+              </BinaryOp>
+            </StringOp>
+            <Constant text="}" />
+            <Constant text="" />
+          </StringOp>
+        </SetVariable>
+        <SetVariable id="38" style="set-variable">
+          <Variable list="false" local="false" variableName="©" />
+          <StringOp op="join" style="join">
+            <Variable list="false" local="false" variableName="©" />
+            <Constant text="-" />
+            <Constant text="{tt stop =" />
+            <StringOp op="format" style="format">
+              <Constant text="{0:n1}" />
+              <CallCustomExpression call="t_to_stop" style="call-custom-expression" />
+              <Constant text="" />
+            </StringOp>
+            <Constant text="s}" />
+            <Constant text="" />
+          </StringOp>
+        </SetVariable>
+        <SetVariable id="39" style="set-variable">
+          <Variable list="false" local="false" variableName="©" />
+          <StringOp op="join" style="join">
+            <Variable list="false" local="false" variableName="©" />
+            <Constant text="-" />
+            <Constant text="{∆tt =" />
+            <StringOp op="format" style="format">
+              <Constant text="{0:n1}" />
+              <BinaryOp op="-" style="op-sub">
+                <CallCustomExpression call="t_to_impact" style="call-custom-expression" />
+                <CallCustomExpression call="t_to_stop" style="call-custom-expression" />
+              </BinaryOp>
+              <Constant text="" />
+            </StringOp>
+            <Constant text="s}" />
+            <Constant text="" />
+          </StringOp>
+        </SetVariable>
+        <SetVariable id="40" style="set-variable">
+          <Variable list="false" local="false" variableName="©" />
+          <StringOp op="join" style="join">
+            <Variable list="false" local="false" variableName="©" />
+            <Constant text="-" />
+            <Constant text="{side v =" />
+            <StringOp op="friendly" subOp="velocity" style="friendly">
+              <CraftProperty property="Vel.LateralSurfaceVelocity" style="prop-velocity" />
+            </StringOp>
+            <Constant text="}" />
+            <Constant text="" />
+          </StringOp>
+        </SetVariable>
+        <DisplayMessage id="41" style="display">
+          <Variable list="false" local="false" variableName="©" />
+          <Constant number="7" />
+        </DisplayMessage>
+      </Instructions>
+    </While>
+    <SetInput input="throttle" id="42" style="set-input">
+      <Constant number="-0" />
+    </SetInput>
+    <SetCraftProperty property="Sound.Beep" id="43" style="play-beep">
+      <Constant text="440" />
+      <Constant number="1" />
+      <Constant number="2" />
+    </SetCraftProperty>
+    <DisplayMessage id="44" style="display">
+      <Constant text="Landed, probably" />
+      <Constant number="7" />
+    </DisplayMessage>
+  </Instructions>
+  <Instructions>
+    <Comment id="45" style="comment" pos="-369.3539,465.7707">
+      <Constant style="comment-text" canReplace="false" text="Landing 1.6" />
+    </Comment>
+    <Comment id="46" style="comment">
+      <Constant style="comment-text" canReplace="false" text="1. Set the activation group 7 to True to turn ON the program" />
+    </Comment>
+    <Comment id="47" style="comment">
+      <Constant style="comment-text" canReplace="false" text="    when the aircraft starts to loose altitude, the landing sequence will start" />
+    </Comment>
+  </Instructions>
+  <Instructions>
+    <Event event="FlightStart" id="48" style="flight-start" pos="-367.8387,266.3464" />
+    <SetVariable id="49" style="set-variable">
+      <Variable list="false" local="false" variableName="craft_height" />
+      <CraftProperty property="Altitude.AGL" style="prop-altitude" />
+    </SetVariable>
+    <SetVariable id="50" style="set-variable">
+      <Variable list="false" local="false" variableName="max_TWR" />
+      <Constant text="8" />
+    </SetVariable>
+  </Instructions>
+  <Instructions>
+    <Comment id="51" style="comment" pos="541.1306,816.6015">
+      <Constant style="comment-text" canReplace="false" text="Changelog" />
+    </Comment>
+    <Comment id="52" style="comment">
+      <Constant style="comment-text" canReplace="false" text="v1.6: added usage instructions" />
+    </Comment>
+    <Comment id="53" style="comment">
+      <Constant style="comment-text" canReplace="false" text="v1.5: beeping is now a function" />
+    </Comment>
+  </Instructions>
+  <Expressions>
+    <CustomExpression callFormat="t_to_stop" format="t_to_stop return (0)" name="t_to_stop" style="custom-expression" pos="1041.792,-208.2937">
+      <BinaryOp op="/" style="op-div">
+        <MathFunction function="abs" style="op-math">
+          <VectorOp op="length" style="vec-op-1">
+            <CraftProperty property="Vel.SurfaceVelocity" style="prop-velocity" />
+          </VectorOp>
+        </MathFunction>
+        <BinaryOp op="-" style="op-sub">
+          <CallCustomExpression call="max_a" style="call-custom-expression" />
+          <CallCustomExpression call="g" style="call-custom-expression" />
+        </BinaryOp>
+      </BinaryOp>
+    </CustomExpression>
+    <CustomExpression callFormat="t_to_impact" format="t_to_impact return (0)" name="t_to_impact" style="custom-expression" pos="1042.072,-267.4133">
+      <BinaryOp op="/" style="op-div">
+        <CallCustomExpression call="h" style="call-custom-expression" />
+        <MathFunction function="abs" style="op-math">
+          <CraftProperty property="Vel.VerticalSurfaceVelocity" style="prop-velocity" />
+        </MathFunction>
+      </BinaryOp>
+    </CustomExpression>
+    <CustomExpression callFormat="max_a" format="max_a return (0)" name="max_a" style="custom-expression" pos="1045.743,-606.0049">
+      <BinaryOp op="min" style="op-min">
+        <BinaryOp op="*" style="op-mul">
+          <Variable list="false" local="false" variableName="max_TWR" />
+          <CallCustomExpression call="g" style="call-custom-expression" />
+        </BinaryOp>
+        <BinaryOp op="/" style="op-div">
+          <CraftProperty property="Performance.MaxActiveEngineThrust" style="prop-performance" />
+          <CraftProperty property="Performance.Mass" style="prop-performance" />
+        </BinaryOp>
+      </BinaryOp>
+    </CustomExpression>
+    <CustomExpression callFormat="g" format="g return (0)" name="g" style="custom-expression" pos="1041.656,-672.1135">
+      <VectorOp op="length" style="vec-op-1">
+        <CraftProperty property="Vel.Gravity" style="prop-velocity" />
+      </VectorOp>
+    </CustomExpression>
+    <CustomExpression callFormat="h" format="h return (0)" name="h" style="custom-expression" pos="1045.017,-805.9586">
+      <BinaryOp op="max" style="op-max">
+        <Constant number="-0" />
+        <BinaryOp op="-" style="op-sub">
+          <CraftProperty property="Altitude.AGL" style="prop-altitude" />
+          <Variable list="false" local="false" variableName="craft_height" />
+        </BinaryOp>
+      </BinaryOp>
+    </CustomExpression>
+    <CustomExpression callFormat="h_to_stop" format="h_to_stop return (0)" name="h_to_stop" style="custom-expression" pos="1042.471,-146.4266">
+      <BinaryOp op="*" style="op-mul">
+        <Constant text="0.5" />
+        <BinaryOp op="/" style="op-div">
+          <BinaryOp op="^" style="op-exp">
+            <VectorOp op="length" style="vec-op-1">
+              <CraftProperty property="Vel.SurfaceVelocity" style="prop-velocity" />
+            </VectorOp>
+            <Constant text="2" />
+          </BinaryOp>
+          <BinaryOp op="-" style="op-sub">
+            <CallCustomExpression call="max_a" style="call-custom-expression" />
+            <CallCustomExpression call="g" style="call-custom-expression" />
+          </BinaryOp>
+        </BinaryOp>
+      </BinaryOp>
+    </CustomExpression>
+    <CustomExpression callFormat="landing_thrust" format="landing_thrust return (0)" name="landing_thrust" style="custom-expression" pos="1043.564,-1028.239">
+      <BinaryOp op="*" style="op-mul">
+        <CraftProperty property="Performance.Mass" style="prop-performance" />
+        <BinaryOp op="min" style="op-min">
+          <BinaryOp op="*" style="op-mul">
+            <Variable list="false" local="false" variableName="max_TWR" />
+            <CallCustomExpression call="g" style="call-custom-expression" />
+          </BinaryOp>
+          <BinaryOp op="+" style="op-add">
+            <CallCustomExpression call="g" style="call-custom-expression" />
+            <BinaryOp op="*" style="op-mul">
+              <Constant text="0.5" />
+              <BinaryOp op="/" style="op-div">
+                <BinaryOp op="^" style="op-exp">
+                  <VectorOp op="length" style="vec-op-1">
+                    <CraftProperty property="Vel.SurfaceVelocity" style="prop-velocity" />
+                  </VectorOp>
+                  <Constant text="2" />
+                </BinaryOp>
+                <CallCustomExpression call="h" style="call-custom-expression" />
+              </BinaryOp>
+            </BinaryOp>
+          </BinaryOp>
+        </BinaryOp>
+      </BinaryOp>
+    </CustomExpression>
+    <CustomExpression callFormat="dv•_tgt" format="dv•_tgt return (0)" name="dv•_tgt" style="custom-expression" pos="541.7751,200.8782">
+      <CraftProperty property="Part.PciToLocal" style="part-transform">
+        <Constant number="-0" />
+        <BinaryOp op="-" style="op-sub">
+          <CraftProperty property="Craft.Velocity" style="craft">
+            <Constant number="-0" />
+          </CraftProperty>
+          <CraftProperty property="Target.Velocity" style="prop-velocity" />
+        </BinaryOp>
+      </CraftProperty>
+    </CustomExpression>
+    <CustomExpression callFormat="dh_tgt" format="dh_tgt return (0)" name="dh_tgt" style="custom-expression" pos="541.0658,118.2402">
+      <BinaryOp op="-" style="op-sub">
+        <BinaryOp op="-" style="op-sub">
+          <CraftProperty property="Altitude.ASL" style="prop-altitude" />
+          <Variable list="false" local="false" variableName="craft_height" />
+        </BinaryOp>
+        <CraftProperty property="Terrain.Height" style="terrain-query">
+          <Planet op="toLatLongAgl" style="planet-to-lat-long-agl">
+            <CraftProperty property="Target.Position" style="prop-nav" />
+          </Planet>
+        </CraftProperty>
+      </BinaryOp>
+    </CustomExpression>
+    <CustomExpression callFormat="r•_tgt" format="r•_tgt return (0)" name="r•_tgt" style="custom-expression" pos="543.3372,284.2361">
+      <CraftProperty property="Part.PciToLocal" style="part-transform">
+        <Constant number="-0" />
+        <BinaryOp op="-" style="op-sub">
+          <CraftProperty property="Target.Position" style="prop-nav" />
+          <CraftProperty property="Craft.Position" style="craft">
+            <Constant number="-0" />
+          </CraftProperty>
+        </BinaryOp>
+      </CraftProperty>
+    </CustomExpression>
+    <CustomExpression callFormat="corr•_to_tgt" format="corr•_to_tgt return (0)" name="corr•_to_tgt" style="custom-expression" pos="542.9255,389.0263">
+      <BinaryOp op="-" style="op-sub">
+        <CallCustomExpression call="r•_tgt" style="call-custom-expression" />
+        <BinaryOp op="*" style="op-mul">
+          <CallCustomExpression call="dv•_tgt" style="call-custom-expression" />
+          <BinaryOp op="/" style="op-div">
+            <CallCustomExpression call="dh_tgt" style="call-custom-expression" />
+            <MathFunction function="abs" style="op-math">
+              <CraftProperty property="Vel.VerticalSurfaceVelocity" style="prop-velocity" />
+            </MathFunction>
+          </BinaryOp>
+        </BinaryOp>
+      </BinaryOp>
+    </CustomExpression>
+    <CustomExpression callFormat="descent_throttle" format="descent_throttle return (0)" name="descent_throttle" style="custom-expression" pos="1042.848,-937.8417">
+      <BinaryOp op="*" style="op-mul">
+        <BinaryOp op="^" style="op-exp">
+          <BinaryOp op="-" style="op-sub">
+            <Constant text="1" />
+            <VectorOp op="dot" style="vec-op-2">
+              <VectorOp op="norm" style="vec-op-1">
+                <CraftProperty property="Vel.SurfaceVelocity" style="prop-velocity" />
+              </VectorOp>
+              <BinaryOp op="*" style="op-mul">
+                <Constant text="-1" />
+                <CraftProperty property="Nav.CraftDirection" style="prop-nav" />
+              </BinaryOp>
+            </VectorOp>
+          </BinaryOp>
+          <Constant text="0.33" />
+        </BinaryOp>
+        <BinaryOp op="min" style="op-min">
+          <Constant text="1" />
+          <BinaryOp op="/" style="op-div">
+            <Variable list="false" local="false" variableName="max_TWR" />
+            <BinaryOp op="/" style="op-div">
+              <CraftProperty property="Performance.MaxActiveEngineThrust" style="prop-performance" />
+              <CraftProperty property="Performance.Mass" style="prop-performance" />
+            </BinaryOp>
+          </BinaryOp>
+        </BinaryOp>
+      </BinaryOp>
+    </CustomExpression>
+    <CustomExpression callFormat="&gt; ON" format="&gt; ON return (0)" name="&gt; ON" style="custom-expression" pos="542.7085,565.02">
+      <ActivationGroup style="activation-group">
+        <Constant text="7" />
+      </ActivationGroup>
+    </CustomExpression>
+    <Comparison op="g" style="op-gt" pos="665.2888,501.9476">
+      <CraftProperty property="Input.Slider1" style="prop-input" />
+      <Constant text="0.5" />
+    </Comparison>
+  </Expressions>
+</Program>

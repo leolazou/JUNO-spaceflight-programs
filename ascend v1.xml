@@ -1,0 +1,414 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Program name="ascend v1">
+  <Variables>
+    <Variable name="Ap" number="-0" />
+    <Variable name="Pe" number="-0" />
+    <Variable name="time_to_Ap" number="-0" />
+    <Variable name="max_TWR" number="-0" />
+    <Variable name="Q" number="-0" />
+    <Variable name="acceptable_max_Q" number="-0" />
+    <Variable name="ascent_angle_power" number="-0" />
+  </Variables>
+  <Instructions>
+    <Event event="ReceiveMessage" id="0" style="receive-msg" pos="542.9273,-52.45521">
+      <Constant canReplace="false" text="ascent staging" />
+    </Event>
+    <While id="1" style="while">
+      <Constant style="true" bool="true" />
+      <Instructions>
+        <WaitUntil id="2" style="wait-until">
+          <Comparison op="le" style="op-lte">
+            <CraftProperty property="Fuel.FuelInStage" style="prop-fuel" />
+            <Constant number="-0" />
+          </Comparison>
+        </WaitUntil>
+        <WaitSeconds id="3" style="wait-seconds">
+          <Constant text="1" />
+        </WaitSeconds>
+        <ActivateStage id="4" style="activate-stage" />
+        <WaitSeconds id="5" style="wait-seconds">
+          <Constant text="0.5" />
+        </WaitSeconds>
+      </Instructions>
+    </While>
+  </Instructions>
+  <Instructions>
+    <Event event="ReceiveMessage" id="6" style="receive-msg" pos="543.7771,-379.1028">
+      <Constant canReplace="false" text="ascent guidance" />
+    </Event>
+    <While id="7" style="while">
+      <Comparison op="le" style="op-lte">
+        <CraftProperty property="Orbit.Apoapsis" style="prop-orbit" />
+        <Variable list="false" local="false" variableName="Ap" />
+      </Comparison>
+      <Instructions>
+        <SetVariable id="8" style="set-variable">
+          <Variable list="false" local="false" variableName="Q" />
+          <BinaryOp op="/" style="op-div">
+            <BinaryOp op="*" style="op-mul">
+              <CraftProperty property="Atmosphere.AirDensity" style="prop-atmosphere" />
+              <BinaryOp op="^" style="op-exp">
+                <VectorOp op="length" style="vec-op-1">
+                  <CraftProperty property="Vel.SurfaceVelocity" style="prop-velocity" />
+                </VectorOp>
+                <Constant text="2" />
+              </BinaryOp>
+            </BinaryOp>
+            <Constant text="2" />
+          </BinaryOp>
+        </SetVariable>
+        <CallCustomInstruction call="set ascent thrust" id="9" style="call-custom-instruction" />
+        <CallCustomInstruction call="set ascent angle" id="10" style="call-custom-instruction" />
+      </Instructions>
+    </While>
+    <LockNavSphere indicatorType="Current" id="11" style="lock-nav-sphere" />
+    <SetInput input="throttle" id="12" style="set-input">
+      <Constant text="0" />
+    </SetInput>
+  </Instructions>
+  <Instructions>
+    <CustomInstruction callFormat="set ascent angle" format="set ascent angle" name="set ascent angle" id="13" style="custom-instruction" pos="1697.592,-38.26262" />
+    <SetTargetHeading property="pitch" id="14" style="set-heading">
+      <CallCustomExpression call="ascent angle" style="call-custom-expression" />
+    </SetTargetHeading>
+  </Instructions>
+  <Instructions>
+    <CustomInstruction callFormat="set ascent thrust" format="set ascent thrust" name="set ascent thrust" id="15" style="custom-instruction" pos="1681.64,-390.4731" />
+    <If id="16" style="if">
+      <BoolOp op="or" style="op-or">
+        <Comparison op="ge" style="op-gte">
+          <Variable list="false" local="false" variableName="Q" />
+          <Variable list="false" local="false" variableName="acceptable_max_Q" />
+        </Comparison>
+        <Comparison op="g" style="op-gt">
+          <CraftProperty property="Performance.TWR" style="prop-performance" />
+          <Variable list="false" local="false" variableName="max_TWR" />
+        </Comparison>
+      </BoolOp>
+      <Instructions>
+        <SetInput input="throttle" id="17" style="set-input">
+          <BinaryOp op="-" style="op-sub">
+            <CraftProperty property="Input.Throttle" style="prop-input" />
+            <Constant text="0.01" />
+          </BinaryOp>
+        </SetInput>
+        <WaitSeconds id="18" style="wait-seconds">
+          <Constant text="0.1" />
+        </WaitSeconds>
+      </Instructions>
+    </If>
+    <ElseIf id="19" style="else">
+      <Constant bool="true" />
+      <Instructions>
+        <SetInput input="throttle" id="20" style="set-input">
+          <BinaryOp op="min" style="op-min">
+            <Constant text="1" />
+            <BinaryOp op="+" style="op-add">
+              <CraftProperty property="Input.Throttle" style="prop-input" />
+              <Constant text="0.01" />
+            </BinaryOp>
+          </BinaryOp>
+        </SetInput>
+        <WaitSeconds id="21" style="wait-seconds">
+          <Constant text="0.1" />
+        </WaitSeconds>
+      </Instructions>
+    </ElseIf>
+  </Instructions>
+  <Instructions>
+    <CustomInstruction callFormat="countdown" format="countdown" name="countdown" id="22" style="custom-instruction" pos="-189.047,-725.3069" />
+    <WaitSeconds id="23" style="wait-seconds">
+      <Constant number="1" />
+    </WaitSeconds>
+    <For id="24" style="for">
+      <Constant text="5" />
+      <Constant text="1" />
+      <Constant text="-1" />
+      <Instructions>
+        <DisplayMessage id="25" style="display">
+          <StringOp op="join" style="join">
+            <Constant text="Countdown -" />
+            <Variable list="false" local="true" variableName="i" />
+            <Constant text="" />
+          </StringOp>
+          <Constant number="7" />
+        </DisplayMessage>
+        <WaitSeconds id="26" style="wait-seconds">
+          <Constant number="1" />
+        </WaitSeconds>
+      </Instructions>
+    </For>
+  </Instructions>
+  <Instructions>
+    <CustomInstruction callFormat="ascent" format="ascent" name="ascent" id="27" style="custom-instruction" pos="-181.5113,-1025.637" />
+    <LockNavSphere indicatorType="Current" id="28" style="lock-nav-sphere" />
+    <SetTargetHeading property="pitch" id="29" style="set-heading">
+      <Constant text="90" />
+    </SetTargetHeading>
+    <SetInput input="throttle" id="30" style="set-input">
+      <Constant text="1" />
+    </SetInput>
+    <ActivateStage id="31" style="activate-stage" />
+    <DisplayMessage id="32" style="display">
+      <Constant text="Liftoff !" />
+      <Constant number="7" />
+    </DisplayMessage>
+    <WaitSeconds id="33" style="wait-seconds">
+      <Constant text="7" />
+    </WaitSeconds>
+    <BroadcastMessage local="false" id="34" style="broadcast-msg-craft">
+      <Constant text="ascent display" />
+      <Constant number="-0" />
+    </BroadcastMessage>
+    <BroadcastMessage local="false" id="35" style="broadcast-msg-craft">
+      <Constant text="ascent guidance" />
+      <Constant number="-0" />
+    </BroadcastMessage>
+    <BroadcastMessage local="false" id="36" style="broadcast-msg-craft">
+      <Constant text="ascent staging" />
+      <Constant number="-0" />
+    </BroadcastMessage>
+    <WaitUntil id="37" style="wait-until">
+      <Comparison op="ge" style="op-gte">
+        <CraftProperty property="Orbit.Apoapsis" style="prop-orbit" />
+        <Variable list="false" local="false" variableName="Ap" />
+      </Comparison>
+    </WaitUntil>
+    <WaitUntil id="38" style="wait-until">
+      <Comparison op="le" style="op-lte">
+        <CraftProperty property="Orbit.TimeToApoapsis" style="prop-orbit" />
+        <Variable list="false" local="false" variableName="time_to_Ap" />
+      </Comparison>
+    </WaitUntil>
+    <BroadcastMessage local="false" id="39" style="broadcast-msg-craft">
+      <Constant text="circularize" />
+      <Constant number="-0" />
+    </BroadcastMessage>
+  </Instructions>
+  <Instructions>
+    <Event event="FlightStart" id="40" style="flight-start" pos="-200.6193,-58.8899" />
+    <SetVariable id="41" style="set-variable">
+      <Variable list="false" local="false" variableName="Ap" />
+      <BinaryOp op="*" style="op-mul">
+        <Constant text="90" />
+        <Constant text="1000" />
+      </BinaryOp>
+    </SetVariable>
+    <SetVariable id="42" style="set-variable">
+      <Variable list="false" local="false" variableName="Pe" />
+      <Constant text="80000" />
+    </SetVariable>
+    <SetVariable id="43" style="set-variable">
+      <Variable list="false" local="false" variableName="time_to_Ap" />
+      <Constant text="60" />
+    </SetVariable>
+    <SetVariable id="44" style="set-variable">
+      <Variable list="false" local="false" variableName="ascent_angle_power" />
+      <Constant text="0.5" />
+    </SetVariable>
+    <SetVariable id="45" style="set-variable">
+      <Variable list="false" local="false" variableName="acceptable_max_Q" />
+      <Constant text="40000" />
+    </SetVariable>
+    <SetVariable id="46" style="set-variable">
+      <Variable list="false" local="false" variableName="max_TWR" />
+      <Constant text="4" />
+    </SetVariable>
+  </Instructions>
+  <Instructions>
+    <Event event="ReceiveMessage" id="47" style="receive-msg" pos="557.1727,-983.1429">
+      <Constant canReplace="false" text="circularize" />
+    </Event>
+    <DisplayMessage id="48" style="display">
+      <Constant text="Circularization" />
+      <Constant number="7" />
+    </DisplayMessage>
+    <While id="49" style="while">
+      <BoolOp op="or" style="op-or">
+        <CallCustomExpression call="isnan" style="call-custom-expression">
+          <CraftProperty property="Orbit.Periapsis" style="prop-orbit" />
+        </CallCustomExpression>
+        <Comparison op="l" style="op-lt">
+          <CraftProperty property="Orbit.Periapsis" style="prop-orbit" />
+          <Variable list="false" local="false" variableName="Pe" />
+        </Comparison>
+      </BoolOp>
+      <Instructions>
+        <DisplayMessage id="50" style="display">
+          <Constant text="Circularizing" />
+          <Constant number="7" />
+        </DisplayMessage>
+        <SetTargetHeading property="pitch" id="51" style="set-heading">
+          <Conditional style="conditional">
+            <Comparison op="g" style="op-gt">
+              <CraftProperty property="Orbit.TimeToApoapsis" style="prop-orbit" />
+              <CallCustomExpression call="safetime_to_Pe" style="call-custom-expression" />
+            </Comparison>
+            <Constant text="0" />
+            <BinaryOp op="*" style="op-mul">
+              <Constant text="15" />
+              <BinaryOp op="-" style="op-sub">
+                <Constant text="1" />
+                <BinaryOp op="/" style="op-div">
+                  <CraftProperty property="Orbit.TimeToApoapsis" style="prop-orbit" />
+                  <CallCustomExpression call="safetime_to_Pe" style="call-custom-expression" />
+                </BinaryOp>
+              </BinaryOp>
+            </BinaryOp>
+          </Conditional>
+        </SetTargetHeading>
+        <If id="52" style="if">
+          <Comparison op="g" style="op-gt">
+            <CraftProperty property="Orbit.Periapsis" style="prop-orbit" />
+            <Constant number="-0" />
+          </Comparison>
+          <Instructions>
+            <SetInput input="throttle" id="53" style="set-input">
+              <BinaryOp op="-" style="op-sub">
+                <Constant text="1" />
+                <BinaryOp op="^" style="op-exp">
+                  <BinaryOp op="/" style="op-div">
+                    <CraftProperty property="Orbit.Periapsis" style="prop-orbit" />
+                    <Variable list="false" local="false" variableName="Pe" />
+                  </BinaryOp>
+                  <Constant text="4" />
+                </BinaryOp>
+              </BinaryOp>
+            </SetInput>
+          </Instructions>
+        </If>
+        <ElseIf id="54" style="else">
+          <Constant bool="true" />
+          <Instructions>
+            <SetInput input="throttle" id="55" style="set-input">
+              <Constant text="1" />
+            </SetInput>
+          </Instructions>
+        </ElseIf>
+      </Instructions>
+    </While>
+    <DisplayMessage id="56" style="display">
+      <StringOp op="join" style="join">
+        <Constant text="In space ! Ap :" />
+        <CraftProperty property="Orbit.Apoapsis" style="prop-orbit" />
+        <Constant text="Pe :" />
+        <CraftProperty property="Orbit.Periapsis" style="prop-orbit" />
+        <Constant text="Incl :" />
+        <CraftProperty property="Orbit.Inclination" style="prop-orbit" />
+        <Constant text="" />
+      </StringOp>
+      <Constant number="7" />
+    </DisplayMessage>
+  </Instructions>
+  <Instructions>
+    <Event event="FlightStart" id="57" style="flight-start" pos="-384.9131,-60.05172" />
+    <CallCustomInstruction call="countdown" id="58" style="call-custom-instruction" />
+    <CallCustomInstruction call="ascent" id="59" style="call-custom-instruction" />
+  </Instructions>
+  <Instructions>
+    <Event event="ReceiveMessage" id="60" style="receive-msg" pos="574.733,-1542.54">
+      <Constant canReplace="false" text="ascent display" />
+    </Event>
+    <While id="61" style="while">
+      <Comparison op="g" style="op-gt">
+        <CraftProperty property="Atmosphere.AirDensity" style="prop-atmosphere" />
+        <Constant text="0" />
+      </Comparison>
+      <Instructions>
+        <DisplayMessage id="62" style="display">
+          <StringOp op="join" style="join">
+            <Constant text="Q :" />
+            <MathFunction function="round" style="op-math">
+              <Variable list="false" local="false" variableName="Q" />
+            </MathFunction>
+            <Constant text="" />
+          </StringOp>
+          <Constant number="7" />
+        </DisplayMessage>
+      </Instructions>
+    </While>
+    <While id="63" style="while">
+      <Constant style="false" bool="false" />
+      <Instructions>
+        <DisplayMessage id="64" style="display">
+          <Constant text="" />
+          <Constant number="7" />
+        </DisplayMessage>
+      </Instructions>
+    </While>
+  </Instructions>
+  <Expressions>
+    <Constant pos="470.0816,-1743.343" bool="false" />
+    <CustomExpression callFormat="ascent angle" format="ascent angle return (0)" name="ascent angle" style="custom-expression" pos="1687.548,-210.6819">
+      <MathFunction function="rad2deg" style="op-math">
+        <MathFunction function="acos" style="op-math">
+          <BinaryOp op="^" style="op-exp">
+            <BinaryOp op="/" style="op-div">
+              <CraftProperty property="Orbit.Apoapsis" style="prop-orbit" />
+              <Variable list="false" local="false" variableName="Ap" />
+            </BinaryOp>
+            <Variable list="false" local="false" variableName="ascent_angle_power" />
+          </BinaryOp>
+        </MathFunction>
+      </MathFunction>
+    </CustomExpression>
+    <BinaryOp op="^" style="op-exp" pos="2192.06,-89.93159">
+      <BinaryOp op="+" style="op-add">
+        <Constant text="1" />
+        <BinaryOp op="^" style="op-exp">
+          <BinaryOp op="/" style="op-div">
+            <CraftProperty property="Orbit.Apoapsis" style="prop-orbit" />
+            <Variable list="false" local="false" variableName="Ap" />
+          </BinaryOp>
+          <Constant text="2" />
+        </BinaryOp>
+      </BinaryOp>
+      <Constant text="-1" />
+    </BinaryOp>
+    <BinaryOp op="^" style="op-exp" pos="2446.364,10.40154">
+      <BinaryOp op="+" style="op-add">
+        <Constant text="1" />
+        <Constant text="" />
+      </BinaryOp>
+      <Constant text="0.3" />
+    </BinaryOp>
+    <Constant pos="1443.49,-781.4731" text="" />
+    <CustomExpression callFormat="ascent thrust" format="ascent thrust return (0)" name="ascent thrust" style="custom-expression" pos="1689.693,-932.5273">
+      <BinaryOp op="min" style="op-min">
+        <Constant text="1" />
+        <BinaryOp op="/" style="op-div">
+          <BinaryOp op="/" style="op-div">
+            <BinaryOp op="/" style="op-div">
+              <CraftProperty property="Performance.MaxActiveEngineThrust" style="prop-performance" />
+              <VectorOp op="length" style="vec-op-1">
+                <CraftProperty property="Vel.Gravity" style="prop-velocity" />
+              </VectorOp>
+            </BinaryOp>
+            <CraftProperty property="Performance.Mass" style="prop-performance" />
+          </BinaryOp>
+          <Variable list="false" local="false" variableName="max_TWR" />
+        </BinaryOp>
+      </BinaryOp>
+    </CustomExpression>
+    <CustomExpression callFormat="isnan (0) " format="isnan |value|  return (0)" name="isnan" style="custom-expression" pos="-172.0042,-2057.757">
+      <BoolOp op="and" style="op-and">
+        <Comparison op="=" style="op-eq">
+          <StringOp op="length" style="length">
+            <Variable list="false" local="true" variableName="value" />
+          </StringOp>
+          <Constant text="3" />
+        </Comparison>
+        <StringOp op="contains" style="contains">
+          <Variable list="false" local="true" variableName="value" />
+          <Constant text="NaN" />
+        </StringOp>
+      </BoolOp>
+    </CustomExpression>
+    <CustomExpression callFormat="safetime_to_Pe" format="safetime_to_Pe return (0)" name="safetime_to_Pe" style="custom-expression" pos="1217.152,-1373.466">
+      <BinaryOp op="/" style="op-div">
+        <Variable list="false" local="false" variableName="time_to_Ap" />
+        <Constant text="2" />
+      </BinaryOp>
+    </CustomExpression>
+  </Expressions>
+</Program>
